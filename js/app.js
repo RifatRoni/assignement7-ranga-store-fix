@@ -19,8 +19,8 @@ const showProducts = (products) => {
       </div>
       <h3 class="my-3">${product.title}</h3>
       <p>Category: ${product.category}</p>
-      <span><i class="fas fa-user-friends"></i> Total Number of Rating: ${product.rating.count}</span>
-      <span><i class="fas fa-star"></i> Average Rating: ${product.rating.rate}</span>
+      <p>Total Number of Rating: ${product.rating.count}</p>
+      <p>Average Rating: ${product.rating.rate}</p>
       <h2 class="my-3">Price: $ ${product.price}</h2>
       <div>
         <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn">add to cart</button>
@@ -41,18 +41,23 @@ const addToCart = (id, price) => {
 
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
-  //bug fixed here: parseInt changed to parseFloat, sothat can show 2digit decimal price after(.)
-  const converted = parseFloat(element);
+  //bug fixed here: parseInt changed to parseFloat and apply ToFixed(2), sothat can show 2digit decimal price after(.)
+  const elementTextToNumber = parseFloat(element);
+  const elementToFixedText = elementTextToNumber.toFixed(2);
+  const converted = parseFloat(elementToFixedText);
   return converted;
 };
 
 // main price update function
 const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
-  const convertPrice = parseFloat(value);
-  const total = convertedOldPrice + convertPrice;
+  const toFixedPriceText = value.toFixed(2);
+  const convertPriceToNumber = parseFloat(toFixedPriceText);
+  const totalBasicPrice = convertedOldPrice + convertPriceToNumber;
   //bug fixed here: Math.round romoved to show 2digit decimal price after(.)
-  document.getElementById(id).innerText = total;
+  const toFixedTotalPriceText = totalBasicPrice.toFixed(2);
+  const convertedTotalPrice = parseFloat(toFixedTotalPriceText)
+  document.getElementById(id).innerText = convertedTotalPrice;
   //bug fixed here: updateTotal() function called here to show the total price
   updateTotal();
 };
@@ -60,7 +65,9 @@ const updatePrice = (id, value) => {
 // set innerText function
 const setInnerText = (id, value) => {
   //bug fixed here: Math.round romoved to show 2digit decimal price after(.)
-  document.getElementById(id).innerText = parseFloat(value);
+  const toFixedValueInText = value.toFixed(2);
+  const convertedValueInNumber = parseFloat(toFixedValueInText);
+  document.getElementById(id).innerText = convertedValueInNumber;
 };
 
 // update delivery charge and total Tax
@@ -85,7 +92,9 @@ const updateTotal = () => {
   const grandTotal =
     getInputValue("price") + getInputValue("delivery-charge") +
     getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+    const toFixedGrandTotalText = grandTotal.toFixed(2);
+    const convertedGrandTotal = parseFloat(toFixedGrandTotalText);
+  document.getElementById("total").innerText = convertedGrandTotal;
 };
 
 //load products function called here

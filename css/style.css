@@ -21,6 +21,9 @@ body {
 }
 
 /* ---------Product Diplay Card css--------- */
+.card-title{
+  color:#612BEE;
+}
 #all-products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
